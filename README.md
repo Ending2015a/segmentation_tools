@@ -32,7 +32,7 @@ python label_loader.py --mat my_label.mat --output label_pic.png
 ```
 -m, --mat [.mat]    : input .mat file 
 -o, --output [.png] : output file name
--c, --column [int] : the maximum column size
+-c, --columns [int] : the maximum column size
 ```
 ---
 
@@ -61,6 +61,11 @@ cv2.imwrite(blend_path, blend)
 
 ## Result
 ADE20K with column size=15
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_15.png)
+![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_15.png =600x)
+<br>
 ADE20K with column size=30
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_30.png)
+![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_30.png =600x)
+
+
+
+
