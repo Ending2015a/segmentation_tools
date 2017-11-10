@@ -61,10 +61,10 @@ cv2.imwrite(blend_path, blend)
 
 ## Result
 ADE20K with column size=15
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_15.png =600x)
+![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_15.png)
 <br>
 ADE20K with column size=30
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_30.png =600x)
+![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_30.png)
 
 
 
