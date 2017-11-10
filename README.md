@@ -67,7 +67,9 @@ ADE20K with column size=30  <br/>
 <img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_30.png" width="600"></img>
 <br/>
 
-draw labels from annotations <br/>
+Draw labels from annotations 
+<br/>
+
 |Input image                |  Output image            |  Label         |
 |:-------------------------:|:------------------------:|:--------------:|
 |<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/image.png" width="300"></img>|<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/seg.png" width="300"></img>|<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/label.png" width="100"></img>|
