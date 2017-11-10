@@ -60,17 +60,13 @@ cv2.imwrite(blend_path, blend)
 ```
 
 ## Result
-ADE20K with column size=15
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_15.png)
-<br>
-ADE20K with column size=30
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_30.png)
+ADE20K with column size=15 <br/>
+<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_15.png" width="600"></img>
+<br/>
+ADE20K with column size=30  <br/>
+<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_30.png" width="600"></img>
+<br/>
 
-Input image                |  Output image
-:-------------------------:|:-------------------------:
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/image.png) | ![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/seg.png)
-
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/label.png)
-
-
-
+|Input image                |  Output image            |  Label         |
+|:-------------------------:|:------------------------:|:--------------:|
+|<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/image.png" width="300"></img>|<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/seg.png" width="300"></img>|<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/label.png" width="100"></img>|
