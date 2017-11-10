@@ -37,16 +37,16 @@ def center_text(img, text, color, rect):
     cv2.putText(img, text, (textX, textY), font, font_scale, color, 1)
     return img
 
-def draw_label_with_text(labels, texts, columns=15):
+def draw_label_with_text(labels, texts, column=15):
     size, maxsz = get_label_max_length(labels, texts)
 
-    column = min(size, columns)
-    row = int(math.ceil(size/float(columns)))
+    col = min(size, column)
+    row = int(math.ceil(size/float(column)))
 
     wnd_w = (maxsz*10+50)
     wnd_h = 30
     width = row * wnd_w
-    height = column * wnd_h
+    height = col * wnd_h
 
     img = np.zeros((height, width, 3), np.uint8)
     
@@ -70,7 +70,7 @@ def draw_label_with_text(labels, texts, columns=15):
                self.y = 0 
             
 
-    r = rect(wnd_w, wnd_h, column, row)
+    r = rect(wnd_w, wnd_h, col, row)
 
     for color, text in zip(labels, texts):
         
@@ -83,7 +83,7 @@ def draw_label_with_text(labels, texts, columns=15):
     return img
 
 
-def draw_labels(anno_img, columns=15):
+def draw_labels(anno_img, column=15):
     color_idx = np.unique(anno_img).astype(int)
     color_list = []
     text_list = []
@@ -91,7 +91,7 @@ def draw_labels(anno_img, columns=15):
         color_list.append(label_to_colours[i])
         text_list.append(label_to_texts[i])
 
-    img = draw_label_with_text(color_list, text_list, columns)
+    img = draw_label_with_text(color_list, text_list, column)
     return img
 
 def draw_anno(anno_img):
@@ -102,8 +102,8 @@ def draw_anno(anno_img):
             img[i, j, :] = label_to_colours[anno_img[i, j]][::-1]
     return img
 
-def draw_anno_and_labels(anno_img, columns=15):
-    label = draw_labels(anno_img, columns)
+def draw_anno_and_labels(anno_img, column=15):
+    label = draw_labels(anno_img, column)
     seg = draw_anno(anno_img)
     return seg, label
 
@@ -116,13 +116,13 @@ def load_label(mat_file):
     label_to_texts = mat['names']
     return label_to_colours, label_to_texts
 
-def output_all_labels(path, columns=15):
+def output_all_labels(path, column=15):
     global label_to_colours
     global label_to_texts
-    l = draw_label_with_text(label_to_colours, label_to_texts, columns)
+    l = draw_label_with_text(label_to_colours, label_to_texts, column)
     cv2.imwrite(path, l)
 
-def output_labels(anno_img, path, columns=15):
+def output_labels(anno_img, path, column=15):
     l = draw_labels(anno_img, columns)
     cv2.imwrite(path, l)
 
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='draw some labels')
     parser.add_argument('-m', '--mat', type=str, default='', help='a .mat file which contains \'colors\' and \'names\' columns')
     parser.add_argument('-o', '--output', type=str, default='./labels.png', help='output path of label image')
-    parser.add_argument('-c', '--columns', type=int, default=15, help='the maximum column size of label image')
+    parser.add_argument('-c', '--column', type=int, default=15, help='the maximum column size of label image')
     
     args = parser.parse_args()
 
@@ -149,7 +149,7 @@ if __name__ == '__main__':
     output_path = os.path.abspath(args.output)
 
     load_label(input_path)
-    output_all_labels(output_path, args.columns)
+    output_all_labels(output_path, args.column)
     print('Save label image to: {}'.format(output_path))
 
 
