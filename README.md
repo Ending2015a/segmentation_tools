@@ -66,6 +66,11 @@ ADE20K with column size=15
 ADE20K with column size=30
 ![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_30.png)
 
+Input image                |  Output image
+:-------------------------:|:-------------------------:
+![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/image.png) | ![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/seg.png)
+
+![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/label.png)
 
 
 
