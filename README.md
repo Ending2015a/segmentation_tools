@@ -36,7 +36,7 @@ python label_loader.py --mat my_label.mat --output label_pic.png
 ```
 ---
 
-Another usage is drawing the labels from the annotations of semantic segmentation in the python script.
+Another usage is drawing the labels from the annotations of segmentation results in the python script.
 
 ```python=
 from label_loader import *
@@ -47,7 +47,7 @@ colors, texts = load_label(mat_file)  #load labels from .mat file
 
 anno = sess.run(pred)
 
-seg_color = draw_anno(anno)[:,:,::-1]  # draw colour seg image from annotations and convert RGB to BGR
+seg_color = draw_anno(anno)[:,:,::-1]  # colored annotations and convert RGB to BGR
 seg_label = draw_labels(anno)[:,:,::-1] # draw label image from annotations and convert RGB to BGR
 # use can simply blend up the colour seg image with original image
 blend = original_img * 0.5 + seg_color * 0.5 
@@ -57,6 +57,31 @@ cv2.imwrite(label_path, seg_label)
 cv2.imwrite(blend_path, blend)
 ...
 
+```
+
+## Other Functions
+```
+set_shadow_color(color)
+# color: the color of text shadow (RGB)
+
+set_font_color(color)
+# color: the color of text (RGB)
+
+set_font_face(font_file):
+# you can change your font style if you have any .ttf file
+# font_file: .ttf file
+
+set_font_size(size):
+# font size
+
+output_all_labels(path, columns=15)
+# draw & save all labels in loaded .mat file to the path
+
+output_labels(anno_img, path, columns=15)
+# draw & save labels contains in annotations only
+
+output_anno(anno_img, path, columns=15)
+# draw & save colored annotation image
 ```
 
 ## Result
