@@ -3,7 +3,7 @@
 This is a simple tools for visualizing the labels from the output of image semantic segmentations.
 ## Install
 Install dependencies:
-* OpenCV
+* PIL
 * Scipy
 * Numpy
 ## Usage
@@ -47,8 +47,8 @@ colors, texts = load_label(mat_file)  #load labels from .mat file
 
 anno = sess.run(pred)
 
-seg_color = draw_anno(anno)  # draw colour seg image from annotations
-seg_label = draw_labels(anno) # draw label image from annotations
+seg_color = draw_anno(anno)[:,:,::-1]  # draw colour seg image from annotations and convert RGB to BGR
+seg_label = draw_labels(anno)[:,:,::-1] # draw label image from annotations and convert RGB to BGR
 # use can simply blend up the colour seg image with original image
 blend = original_img * 0.5 + seg_color * 0.5 
 
@@ -60,11 +60,17 @@ cv2.imwrite(blend_path, blend)
 ```
 
 ## Result
-ADE20K with column size=15
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_15.png)
-<br>
-ADE20K with column size=30
-![](https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/ade20k_label_30.png)
+ADE20K with column size=15 <br/>
+<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/image/ade20k_label_15.png" width="600"></img>
+<br/>
+ADE20K with column size=30 <br/>
+<img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/image/ade20k_label_30.png" width="600"></img>
+
+Cityscapes <br/>
+
+| Image | Seg | Label
+|:-----:|:----:|:----:|
+| <img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/image/hanover_000000_027998_leftImg8bit.png" width="300"></img> | <img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/image/seg.png" width="300"></img> | <img src="https://raw.githubusercontent.com/Ending2015a/segmentation_tools/master/image/label.png" width="200"></img> |
 
 
 
