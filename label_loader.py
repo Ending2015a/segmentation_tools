@@ -1,19 +1,35 @@
-import cv2
+from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 import math
 import scipy.io as sio
-
+import os
 
 
 #===========LABEL VISUALIZER==============
 
-font_scale = 0.5
-font_Face = cv2.FONT_HERSHEY_SIMPLEX
+font_size = 20
+font_face_file = "./font/Arial.ttf"
+font_shadow = (0, 0, 0)  # text shadow color
+font_color = (255, 255, 255) # text color
+
+#=========================================
+
+font_face_file = os.path.abspath(font_face_file)
+font_face = ImageFont.truetype(font_face_file, font_size)
+
 
 #rgb
 label_to_colours = []
-
 label_to_texts = []
+
+
+def set_shadow_color(color):
+    assert(len(color)==3)
+    font_shadow = color
+
+def set_font_color(color):
+    assert(len(color)==3)
+    font_color = color
 
 def get_label_max_length(label, texts):
     size = len(label)
@@ -24,18 +40,33 @@ def get_label_max_length(label, texts):
     return size, maxsz
 
 
-def center_text(img, text, color, rect):
+def center_text(draw, text, rect):
     text = text.strip()
-    font = font_Face
-    textsz = cv2.getTextSize(str(text), font, font_scale, 1)[0]
+    font = font_face
+    textsz = font.getsize(str(text))
+    #textsz = cv2.getTextSize(str(text), font, font_scale, 1)[0]
 
-    textX = (rect.w-textsz[0]) // 2 + rect.x
-    textY = (rect.h+textsz[1]) // 2 + rect.y
+    x = (rect.w-textsz[0]) // 2 + rect.x
+    y = (rect.h-textsz[1]) // 2 + rect.y
 
 
-    cv2.putText(img, text, (textX, textY), font, font_scale, [0, 0, 0], 2)
-    cv2.putText(img, text, (textX, textY), font, font_scale, color, 1)
-    return img
+    #cv2.putText(img, text, (textX, textY), font, font_scale, [0, 0, 0], 2)
+    #cv2.putText(img, text, (textX, textY), font, font_scale, color, 1)
+
+    draw.text((x-1, y), text, font=font, fill=font_shadow)
+    draw.text((x+1, y), text, font=font, fill=font_shadow)
+    draw.text((x, y-1), text, font=font, fill=font_shadow)
+    draw.text((x, y+1), text, font=font, fill=font_shadow)
+
+    draw.text((x-1, y-1), text, font=font, fill=font_shadow)
+    draw.text((x+1, y-1), text, font=font, fill=font_shadow)
+    draw.text((x-1, y+1), text, font=font, fill=font_shadow)
+    draw.text((x+1, y+1), text, font=font, fill=font_shadow)
+
+    draw.text((x, y), text, font=font, fill=font_color)
+
+    return draw
+
 
 def draw_label_with_text(labels, texts, column=15):
     size, maxsz = get_label_max_length(labels, texts)
@@ -48,8 +79,12 @@ def draw_label_with_text(labels, texts, column=15):
     width = row * wnd_w
     height = col * wnd_h
 
-    img = np.zeros((height, width, 3), np.uint8)
-    
+    #img = np.zeros((height, width, 3), np.uint8)
+
+    img = Image.new('RGB', (width, height), (0, 0, 0))
+
+    draw = ImageDraw.Draw(img)
+
     class rect:
         def __init__(self, w, h, colmax, rowmax):
             self.x=0
@@ -74,9 +109,10 @@ def draw_label_with_text(labels, texts, column=15):
 
     for color, text in zip(labels, texts):
         
-        color = color.astype(dtype=int).tolist()[::-1]
-        cv2.rectangle(img, (r.x, r.y), (r.x+r.w, r.y+r.h), color ,-1)
-        img = center_text(img, text, [255, 255, 255], r)
+        color = tuple(color.astype(dtype=int).tolist())
+        draw.rectangle([(r.x, r.y), (r.x+r.w-1, r.y+r.h-1)], color)
+        #cv2.rectangle(img, (r.x, r.y), (r.x+r.w, r.y+r.h), color ,-1)
+        draw = center_text(draw, text, r)
         r.next()
 
 
@@ -92,14 +128,14 @@ def draw_labels(anno_img, column=15):
         text_list.append(label_to_texts[i])
 
     img = draw_label_with_text(color_list, text_list, column)
-    return img
+    return np.array(img)
 
 def draw_anno(anno_img):
     shape = anno_img.shape
     img = np.zeros((shape[0], shape[1], 3), dtype=np.uint8)
     for i in range(shape[0]):
         for j in range(shape[1]):
-            img[i, j, :] = label_to_colours[anno_img[i, j]][::-1]
+            img[i, j, :] = label_to_colours[anno_img[i, j]]
     return img
 
 def draw_anno_and_labels(anno_img, column=15):
@@ -120,15 +156,15 @@ def output_all_labels(path, column=15):
     global label_to_colours
     global label_to_texts
     l = draw_label_with_text(label_to_colours, label_to_texts, column)
-    cv2.imwrite(path, l)
+    l.save(path)
 
 def output_labels(anno_img, path, column=15):
     l = draw_labels(anno_img, columns)
-    cv2.imwrite(path, l)
+    l.save(path)
 
 def output_anno(anno_img, path):
     l = draw_anno(anno_img, path)
-    cv2.imwrite(path, l)
+    l.save(path)
 
 if __name__ == '__main__':
     import argparse
@@ -137,6 +173,7 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--mat', type=str, default='', help='a .mat file which contains \'colors\' and \'names\' columns')
     parser.add_argument('-o', '--output', type=str, default='./labels.png', help='output path of label image')
     parser.add_argument('-c', '--column', type=int, default=15, help='the maximum column size of label image')
+    
     
     args = parser.parse_args()
 
