@@ -25,11 +25,19 @@ label_to_texts = []
 
 def set_shadow_color(color):
     assert(len(color)==3)
-    font_shadow = color
+    font_shadow = tuple(color)
 
 def set_font_color(color):
     assert(len(color)==3)
-    font_color = color
+    font_color = tuple(color)
+
+def set_font_face(font_file):
+    font_face_file = font_file
+    font_face = ImageFont.truetype(font_face_file, font_size)
+
+def set_font_size(size):
+    font_size = size
+    font_face = ImageFont.truetype(font_face_file, font_size)
 
 def get_label_max_length(label, texts):
     size = len(label)
@@ -115,7 +123,6 @@ def draw_label_with_text(labels, texts, column=15):
         draw = center_text(draw, text, r)
         r.next()
 
-
     return img
 
 
@@ -159,11 +166,11 @@ def output_all_labels(path, column=15):
     l.save(path)
 
 def output_labels(anno_img, path, column=15):
-    l = draw_labels(anno_img, columns)
+    l = Image.fromarray(draw_labels(anno_img, columns))
     l.save(path)
 
 def output_anno(anno_img, path):
-    l = draw_anno(anno_img, path)
+    l = Image.fromarray(draw_anno(anno_img, path))
     l.save(path)
 
 if __name__ == '__main__':
